@@ -3,6 +3,7 @@ using NH.Example.Web.Models;
 using System;
 using System.Threading.Tasks;
 using NHibernate;
+using NHibernate.Linq;
 
 namespace NH.Example.Web.Controllers
 {
@@ -15,6 +16,14 @@ namespace NH.Example.Web.Controllers
         public UsersController(ISession session)
         {
             _session = session;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<User>> GetAll()
+        {
+            var user = await _session.Query<User>().ToListAsync();
+
+            return Ok(user);
         }
 
         [HttpGet("{id}")]

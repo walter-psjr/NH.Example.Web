@@ -4,23 +4,21 @@ using NHibernate.Mapping.ByCode.Conformist;
 
 namespace NH.Example.Web.Mappings
 {
-    public class UserMapping : ClassMapping<User>
+    public class RoleMapping : ClassMapping<Role>
     {
-        public UserMapping()
+        public RoleMapping()
         {
             Id(x => x.Id, map =>
             {
-                map.Column("UserId");
+                map.Column("RoleId");
                 map.Generator(Generators.Guid);
             });
 
-            Property(x => x.UserName);
-            
-            Property(x => x.Active);
+            Property(x => x.Name);
 
-            IdBag(x => x.Roles, map =>
+            IdBag(x => x.Users, map =>
             {
-                map.Key(m => m.Column("RoleId"));
+                map.Key(m => m.Column("UserId"));
                 map.Table("UserRole");
                 map.Id(m =>
                 {
@@ -31,7 +29,7 @@ namespace NH.Example.Web.Mappings
             {
                 rel.ManyToMany(map =>
                 {
-                    map.Column("UserId");
+                    map.Column("RoleId");
                 });
             });
         }
