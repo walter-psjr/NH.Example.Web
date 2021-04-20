@@ -6,5 +6,6 @@ namespace NH.Example.Web.Models
     {
         public virtual Guid Id { get; set; }
         public virtual string Number { get; set; }
+        public virtual User User { get; set; }
     }
 }

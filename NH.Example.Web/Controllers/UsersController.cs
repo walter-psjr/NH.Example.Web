@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NH.Example.Web.Models;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using NHibernate;
 using NHibernate.Linq;
@@ -21,9 +22,9 @@ namespace NH.Example.Web.Controllers
         [HttpGet]
         public async Task<ActionResult<User>> GetAll()
         {
-            var user = await _session.Query<User>().ToListAsync();
+            var users = await _session.Query<User>().ToListAsync();
 
-            return Ok(user);
+            return Ok(users);
         }
 
         [HttpGet("{id}")]
@@ -72,6 +73,31 @@ namespace NH.Example.Web.Controllers
             {
                 await _session.GetCurrentTransaction().RollbackAsync();
 
+                throw;
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var transaction = _session.BeginTransaction();
+
+            try
+            {
+                var user = await _session.GetAsync<User>(id);
+
+                if (user == null)
+                    return NotFound("User not found");
+
+                await _session.DeleteAsync(user);
+
+                await transaction.CommitAsync();
+
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                await transaction.RollbackAsync();
                 throw;
             }
         }

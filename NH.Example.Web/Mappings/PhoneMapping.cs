@@ -15,6 +15,11 @@ namespace NH.Example.Web.Mappings
             });
 
             Property(x => x.Number);
+
+            ManyToOne(x => x.User, map =>
+            {
+                map.Column("UserId");
+            });
         }
     }
 }

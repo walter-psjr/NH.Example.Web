@@ -55,6 +55,7 @@ namespace NH.Example.Web.Controllers
                 if (user == null)
                     return NotFound();
 
+                phone.User = user;
                 user.Phones.Add(phone);
 
                 await _session.UpdateAsync(user);
@@ -90,6 +91,38 @@ namespace NH.Example.Web.Controllers
                 await transaction.CommitAsync();
 
                 return CreatedAtAction(nameof(GetById), new { userId = user.Id, phoneId = phone.Id }, null);
+            }
+            catch (Exception e)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+
+        [HttpDelete("~/api/users/{userId}/phones/{phoneId}")]
+        public async Task<IActionResult> Delete(Guid userId, Guid phoneId)
+        {
+            var transaction = _session.BeginTransaction();
+
+            try
+            {
+                var user = await _session.GetAsync<User>(userId);
+
+                if (user == null)
+                    return NotFound("User not found");
+
+                var phone = user.Phones.FirstOrDefault(x => x.Id == phoneId);
+
+                if (phone == null)
+                    return NotFound("Phone not found");
+
+                user.Phones.Remove(phone);
+
+                await _session.UpdateAsync(user);
+
+                await transaction.CommitAsync();
+
+                return NoContent();
             }
             catch (Exception e)
             {

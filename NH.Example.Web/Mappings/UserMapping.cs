@@ -21,7 +21,15 @@ namespace NH.Example.Web.Mappings
 
             Bag(x => x.Phones, map =>
             {
+                map.Key(map =>
+                {
+                    map.Column("UserId");
+                    map.NotNullable(false);
+                });
                 map.Cascade(Cascade.All);
+                //map.Fetch(CollectionFetchMode.Subselect);
+                //map.Lazy(CollectionLazy.NoLazy);
+                map.Inverse(true);
             }, rel =>
             {
                 rel.OneToMany();
