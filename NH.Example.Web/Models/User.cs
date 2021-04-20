@@ -8,11 +8,13 @@ namespace NH.Example.Web.Models
         public virtual Guid Id { get; set; }
         public virtual string UserName { get; set; }
         public virtual bool Active { get; set; }
+        public virtual IList<Phone> Phones { get; set; }
         public virtual IList<Role> Roles { get; set; }
 
         public User()
         {
             Roles = new List<Role>();
+            Phones = new List<Phone>();
         }
     }
 }

@@ -58,6 +58,7 @@ namespace NH.Example.Web
                 var modelMapper = new ModelMapper();
                 modelMapper.AddMapping<UserMapping>();
                 modelMapper.AddMapping<RoleMapping>();
+                modelMapper.AddMapping<PhoneMapping>();
 
                 var mappings = modelMapper.CompileMappingForAllExplicitlyAddedEntities();
 

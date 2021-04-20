@@ -1,6 +1,7 @@
 ﻿using NH.Example.Web.Models;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
+using NHibernate.Type;
 
 namespace NH.Example.Web.Mappings
 {
@@ -17,6 +18,14 @@ namespace NH.Example.Web.Mappings
             Property(x => x.UserName);
             
             Property(x => x.Active);
+
+            Bag(x => x.Phones, map =>
+            {
+                map.Cascade(Cascade.All);
+            }, rel =>
+            {
+                rel.OneToMany();
+            });
 
             IdBag(x => x.Roles, map =>
             {

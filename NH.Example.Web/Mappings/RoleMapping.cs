@@ -1,6 +1,7 @@
 ﻿using NH.Example.Web.Models;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
+using NHibernate.Type;
 
 namespace NH.Example.Web.Mappings
 {
